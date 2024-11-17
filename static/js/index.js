@@ -1,20 +1,20 @@
 (function () {
     document.ready = function (callback) {
         if (document.addEventListener) {
-            document.addEventListener('DOMContentLoaded', function () {
-                document.removeEventListener('DOMContentLoaded', arguments.callee, false);
+            const handler = function () {
+                document.removeEventListener('DOMContentLoaded', handler, false);
                 callback();
-            }, false)
-        }
-        else if (document.attachEvent) {
-            document.attachEvent('onreadystatechange', function () {
-                if (document.readyState == "complete") {
-                    document.detachEvent("onreadystatechange", arguments.callee);
+            };
+            document.addEventListener('DOMContentLoaded', handler, false);
+        } else if (document.attachEvent) {
+            const handler = function () {
+                if (document.readyState === "complete") {
+                    document.detachEvent('onreadystatechange', handler);
                     callback();
                 }
-            })
-        }
-        else if (document.lastChild == document.body) {
+            };
+            document.attachEvent('onreadystatechange', handler);
+        } else if (document.lastChild === document.body) {
             callback();
         }
     };
